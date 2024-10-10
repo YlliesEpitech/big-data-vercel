@@ -2,6 +2,7 @@
   "name": "api",
   "version": "1.0.0",
   "main": "../api/src/index.js",
+  "type": "module",
   "license": "MIT",
   "dependencies": {
     "cheerio": "^1.0.0",
