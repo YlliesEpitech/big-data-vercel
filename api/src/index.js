@@ -11,18 +11,43 @@ app.get("/", async (req, res) => {
 
     // Récupère les valeurs que je souhaite de la page.
     getQuestions(data);
+
   };
 
   // Fonction pour récuperer les valeurs que je souhaite
   const getQuestions = async (html) => {
     const $ = cheerio.load(html);
-    $(
-      ".tw-cursor-pointer.tw-relative.tw-inline-flex.tw-items-center.tw-rounded-lg.tw-px-4.tw-py-1\\.5.tw-text-sm.tw-font-semibold.\\!tw-text-gray-900.hover\\:tw-bg-gray-50.dark\\:\\!tw-text-moon-50.dark\\:hover\\:tw-bg-moon-700",
+    const crypto = {};
+    const arr = []
+    $('.tw-text-gray-700.dark\\:tw-text-moon-100.tw-font-semibold.tw-text-sm.tw-leading-5').each(function () {
+      try {
+        // Extraire le texte complet et enlever le symbole
+        let fullText = $(this).text().replace(/\r?\n?/g, '').trim();
 
-      html
-    ).each(function () {
-      console.log($(this).text());
+        // Supposons que le nom et le symbole sont séparés par un espace
+        const parts = fullText.split(' ');
+        const coinName = parts.slice(0, parts.length - 1).join(' '); // Prend tout sauf le dernier élément comme nom
+        const symbol = parts[parts.length - 1]; // Le dernier élément est le symbole
+
+        // Extraire le prix
+        const priceElement = $(this).closest('tr').find('span[data-price-target="price"]').first();
+        const price = priceElement.length > 0 ? priceElement.text().trim() : null;
+        // Créer un objet et l'ajouter au tableau
+        arr.push({
+          name: coinName.trim(), // Supprime les espaces supplémentaires
+          symbol: symbol,
+          price: price
+        });
+      } catch (error) {
+        console.error('Erreur lors du traitement des données de la cryptomonnaie:', error);
+      }
     });
+
+    console.log(arr);
+
+
+
+
   };
 
   const data = await fetchData();
