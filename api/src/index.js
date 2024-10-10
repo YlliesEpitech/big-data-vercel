@@ -1,8 +1,10 @@
 const express = require("express");
 const app = express();
 const cheerio = require("cheerio");
+const moment = require('moment');
 
 app.get("/", async (req, res) => {
+
   const fetchData = async () => {
     // Récupère l'html de la page
     const url = "https://www.coingecko.com/";
@@ -10,16 +12,19 @@ app.get("/", async (req, res) => {
     const data = await response.text();
 
     // Récupère les valeurs que je souhaite de la page.
-    getQuestions(data);
-
+    return getCrypto(data); // Assurez-vous que fetchData retourne le tableau
   };
 
-  // Fonction pour récuperer les valeurs que je souhaite
-  const getQuestions = async (html) => {
+  // Fonction pour récupérer les valeurs que je souhaite
+  const getCrypto = async (html) => {
     const $ = cheerio.load(html);
-    const crypto = {};
-    const arr = []
-    $('.tw-text-gray-700.dark\\:tw-text-moon-100.tw-font-semibold.tw-text-sm.tw-leading-5').each(function () {
+    const arr = [];
+
+    // Utilisation d'un compteur pour limiter à 30 éléments
+    $('.tw-text-gray-700.dark\\:tw-text-moon-100.tw-font-semibold.tw-text-sm.tw-leading-5').each(function (index) {
+      // Limite à 30 cryptomonnaies
+      if (index >= 51) return false; // Arrête la boucle après 30 itérations
+
       try {
         // Extraire le texte complet et enlever le symbole
         let fullText = $(this).text().replace(/\r?\n?/g, '').trim();
@@ -32,32 +37,28 @@ app.get("/", async (req, res) => {
         // Extraire le prix
         const priceElement = $(this).closest('tr').find('span[data-price-target="price"]').first();
         const price = priceElement.length > 0 ? priceElement.text().trim() : null;
-        // Créer un objet et l'ajouter au tableau
-        arr.push({
-          name: coinName.trim(), // Supprime les espaces supplémentaires
-          symbol: symbol,
-          price: price
-        });
+
+        // Créer un objet et l'ajouter au tableau que si price a une valeur true
+        price &&
+          arr.push({
+            name: coinName.trim(), // Supprime les espaces supplémentaires
+            symbol: symbol,
+            price: price,
+            date: new Date()
+          });
       } catch (error) {
         console.error('Erreur lors du traitement des données de la cryptomonnaie:', error);
       }
     });
 
-    console.log(arr);
-
-
-
-
+    return arr;
   };
 
   const data = await fetchData();
-
+  console.log(data.length)
   res.json({ data: data });
 });
 
-app.get("/hello", (req, res) => {
-  res.json({ message: "Hello" });
-});
 
 app.listen(3000, () => {
   console.log("Server has started");
