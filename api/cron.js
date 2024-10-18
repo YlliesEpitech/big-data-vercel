@@ -1,7 +1,11 @@
-export default async function saveCryptoCurrencies() {
+import { fetchData } from './src/utils/functions/AllExports'; // Assurez-vous d'importer fetchData
+import CryptoCurrency from './src/models/crypto'; // Assurez-vous que le modèle est correctement importé
+import Currency from './src/models/currency'; // Assurez-vous que le modèle est correctement importé
 
+export default async function handler(req, res) {
     const authorizationHeader = req.headers['authorization']; // Récupérer l'en-tête Authorization
 
+    // Vérifier si l'en-tête d'autorisation correspond au secret
     if (authorizationHeader !== `Bearer ${process.env.CRON_SECRET}`) {
         return res.status(401).end('Unauthorized'); // Si le secret ne correspond pas, renvoie une erreur 401
     }
@@ -37,7 +41,9 @@ export default async function saveCryptoCurrencies() {
             }
         }
         console.log("Cryptos ajoutées", data);
+        res.status(200).json({ message: "Cryptos ajoutées", data });
     } catch (error) {
         console.error("Erreur lors de la création des cryptos", error);
+        res.status(500).json({ error: "Internal Server Error" });
     }
-};
+}
