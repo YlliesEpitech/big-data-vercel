@@ -22,7 +22,6 @@ app.get("/", async (req, res) => {
   }
 })
 
-
 app.post("/create", async (req, res) => {
   try {
     const data = await fetchData();
