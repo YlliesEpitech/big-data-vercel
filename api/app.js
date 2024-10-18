@@ -12,6 +12,10 @@ const app = express();
 
 app.use(cors());
 
+app.get("/", (req, res) => {
+  res.json("Hello !")
+})
+
 app.get("/cryptocurrencies", async (req, res) => {
   try {
     const cryptos = await CryptoCurrency.find().populate('currencies');
