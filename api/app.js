@@ -1,11 +1,11 @@
 console.log("OK")
 require('dotenv').config();
 const cors = require('cors');
-const connection = require("./models/connection")
+const connection = require("./src/models/connection")
 const express = require('express');
-const CryptoCurrency = require("./models/crypto");
-const Currency = require("./models/currency")
-const { fetchData } = require('./utils/functions/AllExports');
+const CryptoCurrency = require("./src/models/crypto");
+const Currency = require("./src/models/currency")
+const { fetchData } = require('./src/utils/functions/AllExports');
 
 const app = express();
 
@@ -99,9 +99,6 @@ app.post("/create", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
-
-
-
 
 app.listen(3000, () => {
   console.log("Server has started 🚀");
