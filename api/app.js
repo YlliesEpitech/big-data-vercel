@@ -12,11 +12,7 @@ const app = express();
 
 app.use(cors());
 
-app.get("/", (req, res) => {
-  res.json({ message: "Hello !" })
-})
-
-app.get("/cryptocurrencies", async (req, res) => {
+app.get("/", async (req, res) => {
   try {
     const cryptos = await CryptoCurrency.find().populate('currencies');
     res.json(cryptos);
@@ -24,7 +20,8 @@ app.get("/cryptocurrencies", async (req, res) => {
     console.error("Erreur lors de la récupération des cryptomonnaies", error);
     res.status(500).json({ error: "Erreur lors de la récupération des cryptomonnaies" });
   }
-});
+})
+
 
 app.post("/create", async (req, res) => {
   try {
