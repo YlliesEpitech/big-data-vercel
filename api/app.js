@@ -13,7 +13,7 @@ const app = express();
 app.use(cors());
 
 app.get("/", (req, res) => {
-  res.json("Hello !")
+  res.json({ message: "Hello !" })
 })
 
 app.get("/cryptocurrencies", async (req, res) => {
