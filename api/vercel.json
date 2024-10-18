@@ -10,7 +10,7 @@
       "dest": "app.js"
     }],
     "crons": [{
-    "path": "/api/cron",
+    "path": "/cron",
     "schedule": "* * * * *"
   }]
    }
