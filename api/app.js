@@ -27,8 +27,8 @@ app.post("/create", async (req, res) => {
   try {
     const data = await fetchData();
 
-    // Itérer sur chaque objet dans le tableau data
-    for (const crypto of data) {
+    // Créer un tableau de promesses pour les opérations de sauvegarde
+    const cryptoPromises = data.map(async (crypto) => {
       // Vérifie si la crypto existe déjà dans la db
       let existingCrypto = await CryptoCurrency.findOne({ name: crypto.name, symbol: crypto.symbol });
 
@@ -41,7 +41,7 @@ app.post("/create", async (req, res) => {
       await newCurrency.save(); // Attendre que la devise soit sauvegardée
 
       if (existingCrypto) {
-        // Si elle existe, ajouter la nouvelle devise à l'array currencies de la cryptom existante
+        // Si elle existe, ajouter la nouvelle devise à l'array currencies de la cryptomonnaie existante
         existingCrypto.currencies.push(newCurrency._id);
         await existingCrypto.save(); // Enregistrer les changements
       } else {
@@ -51,9 +51,13 @@ app.post("/create", async (req, res) => {
           symbol: crypto.symbol,
           currencies: [newCurrency._id],
         });
-        await newCrypto.save(); // Sauvegarder la nouvelle crypto
+        await newCrypto.save(); // Sauvegarder la nouvelle cryptomonnaie
       }
-    }
+    });
+
+    // Attendre que toutes les promesses soient résolues
+    await Promise.all(cryptoPromises);
+
     res.json({ message: "Cryptos ajoutées", data: data });
 
   } catch (error) {
@@ -61,6 +65,7 @@ app.post("/create", async (req, res) => {
     res.status(500).json({ error: "Internal Server Error" });
   }
 });
+
 
 app.listen(3000, () => {
   console.log("Server has started 🚀");
