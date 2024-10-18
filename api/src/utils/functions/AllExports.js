@@ -1,4 +1,7 @@
-import { fetchData } from './fetchData.js';
-import { getCrypto } from './getCrypto.js';
+const { fetchData } = require('./fetchData.js');
+const { getCrypto } = require('./getCrypto.js');
 
-export { fetchData, getCrypto };
+module.exports = {
+    fetchData,
+    getCrypto,
+};

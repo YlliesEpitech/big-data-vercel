@@ -1,5 +1,6 @@
-import { getCrypto } from "./getCrypto.js";
-export const fetchData = async () => {
+const { getCrypto } = require('./getCrypto.js');
+
+const fetchData = async () => {
     // Récupère l'html de la page
     const url = "https://www.coingecko.com/";
     const response = await fetch(url);
@@ -8,3 +9,7 @@ export const fetchData = async () => {
     // Récupère les valeurs que je souhaite de la page.
     return getCrypto(data);
 }
+
+module.exports = {
+    fetchData
+};

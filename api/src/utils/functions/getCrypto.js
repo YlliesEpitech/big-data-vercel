@@ -1,7 +1,6 @@
-import * as cheerio from 'cheerio';
-
+const cheerio = require('cheerio'); // Utilise require pour cheerio
 // Fonction pour récupérer les valeurs que je souhaite
-export const getCrypto = async (html) => {
+const getCrypto = async (html) => {
     const $ = cheerio.load(html);
     const arr = [];
 
@@ -37,4 +36,8 @@ export const getCrypto = async (html) => {
     });
 
     return arr;
+};
+
+module.exports = {
+    getCrypto
 };
