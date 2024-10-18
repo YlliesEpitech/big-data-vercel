@@ -3,12 +3,7 @@ import CryptoCurrency from './src/models/crypto'; // Assurez-vous que le modèle
 import Currency from './src/models/currency'; // Assurez-vous que le modèle est correctement importé
 
 export default async function handler(req, res) {
-    const authorizationHeader = req.headers['authorization']; // Récupérer l'en-tête Authorization
 
-    // Vérifier si l'en-tête d'autorisation correspond au secret
-    if (authorizationHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-        return res.status(401).end('Unauthorized'); // Si le secret ne correspond pas, renvoie une erreur 401
-    }
 
     try {
         const data = await fetchData();
