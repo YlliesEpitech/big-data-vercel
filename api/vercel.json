@@ -8,9 +8,5 @@
     "routes": [{
       "src": "/(.*)",
       "dest": "app.js"
-    }],
-    "crons": [{
-    "path": "/api/cron",
-    "schedule": "*/5 * * * *"
-  }]
+    }]
    }
