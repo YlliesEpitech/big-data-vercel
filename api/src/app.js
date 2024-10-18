@@ -1,6 +1,5 @@
 require('dotenv').config();
 const cors = require('cors');
-app.use(cors());
 const connection = require("./models/connection")
 const express = require('express');
 const CryptoCurrency = require("./models/crypto");
@@ -9,6 +8,7 @@ const { fetchData } = require('./utils/functions/AllExports');
 
 const app = express();
 
+app.use(cors());
 
 const saveCryptoCurrencies = async () => {
   try {
