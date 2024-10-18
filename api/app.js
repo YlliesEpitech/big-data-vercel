@@ -7,6 +7,7 @@ const CryptoCurrency = require("./src/models/crypto");
 const Currency = require("./src/models/currency")
 const { fetchData } = require('./src/utils/functions/AllExports');
 
+
 const app = express();
 
 app.use(cors());
