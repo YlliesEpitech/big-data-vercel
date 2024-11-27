@@ -65,6 +65,32 @@ app.post("/create", async (req, res) => {
   }
 });
 
+app.get("/crypto/:name", async (req, res) => {
+  const { name } = req.params;
+
+  try {
+    // Recherche de la cryptomonnaie par son nom et récupération des devises associées
+    const crypto = await CryptoCurrency.findOne({ name })
+      .populate({
+        path: 'currencies',
+        select: 'currency date -_id', // Inclure uniquement la valeur et la date
+      });
+
+    if (!crypto) {
+      return res.status(404).json({ error: "Cryptomonnaie introuvable" });
+    }
+
+    res.json({
+      name: crypto.name,
+      symbol: crypto.symbol,
+      history: crypto.currencies, // Contient l'historique des devises
+    });
+  } catch (error) {
+    console.error("Erreur lors de la récupération de la cryptomonnaie", error);
+    res.status(500).json({ error: "Erreur lors de la récupération de la cryptomonnaie" });
+  }
+});
+
 
 app.listen(3000, () => {
   console.log("Server has started 🚀");
