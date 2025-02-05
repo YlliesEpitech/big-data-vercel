@@ -1,0 +1,13 @@
+name: Cron Job
+# Forcer le redemarrage du cron
+on:
+  schedule:
+    - cron: '*/5 * * * *'  # Exécute toutes les 5 minutes
+
+jobs:
+  request_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send HTTP Request
+        run: |
+          curl -X POST https://big-data-ruby.vercel.app/create
