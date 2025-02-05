@@ -1,5 +1,4 @@
 name: Cron Job
-# Forcer le redemarrage du cron
 on:
   schedule:
     - cron: '*/5 * * * *'  # Exécute toutes les 5 minutes
