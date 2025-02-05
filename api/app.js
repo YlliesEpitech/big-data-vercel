@@ -1,4 +1,3 @@
-console.log("OK")
 require('dotenv').config();
 const cors = require('cors');
 const connection = require("./src/models/connection")
